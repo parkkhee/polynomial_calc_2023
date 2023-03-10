@@ -7,13 +7,29 @@ public class Calc {
 
     public static int run(String str) {
         int answer=0;
-        str = str.replaceAll("- ", "+ -");
+        boolean includeMul = false;
+        if (str.contains("*")) {
+            includeMul = true;
+        }
 
-        String[] num = str.split(" \\+ ");
+        if (includeMul) {
 
-        for (int i = 0; i < num.length; i++) {
+            String[] num = str.split(" \\* ");
+            int answerM =1;
+            for (String s : num) {
+                answerM *= Integer.parseInt(s);
+            }
+            return answerM;
+
+        }else {
+            str = str.replaceAll("- ", "+ -");
+
+            String[] num = str.split(" \\+ ");
+
+            for (int i = 0; i < num.length; i++) {
 //            System.out.println(num[i]);
-            answer += Integer.parseInt(num[i]);
+                answer += Integer.parseInt(num[i]);
+            }
         }
 
 
