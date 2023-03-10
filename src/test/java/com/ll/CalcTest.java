@@ -70,7 +70,19 @@ class CalcTest {
 
     @Test
     @DisplayName("81 / 9 == 9")
-    void t11(){
+    void t11() {
         assertThat(Calc.run("81 / 9")).isEqualTo(9);
+    }
+
+    @Test
+    @DisplayName("30 - 10 + 20 == 40")
+    void t12(){
+        assertThat(Calc.run("30 - 10 + 20")).isEqualTo(40);
+    }
+
+    @Test
+    @DisplayName("30 - 10 + 20 - 60 -120 == -140")
+    void t13(){
+        assertThat(Calc.run("30 - 10 + 20 - 60 - 120")).isEqualTo(-140);
     }
 }

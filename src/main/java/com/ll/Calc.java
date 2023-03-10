@@ -1,41 +1,23 @@
 package com.ll;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Calc {
 
     public static int run(String str) {
+        int answer=0;
+        str = str.replaceAll("- ", "+ -");
 
-        if (str.contains("+")) {
-            String[] bits = str.split(" \\+ ");
+        String[] num = str.split(" \\+ ");
 
-            int a = Integer.parseInt(bits[0]);
-            int b = Integer.parseInt(bits[1]);
-
-            return a + b;
-        } else if (str.contains("-")) {
-            String[] bits = str.split(" - ");
-
-            int a = Integer.parseInt(bits[0]);
-            int b = Integer.parseInt(bits[1]);
-
-            return a - b;
-        } else if (str.contains("*")) {
-            String[] bits = str.split(" \\* ");
-
-            int a = Integer.parseInt(bits[0]);
-            int b = Integer.parseInt(bits[1]);
-
-            return a * b;
-        } else if (str.contains("/")) {
-            String[] bits = str.split(" / ");
-
-            int a = Integer.parseInt(bits[0]);
-            int b = Integer.parseInt(bits[1]);
-
-            return a / b;
+        for (int i = 0; i < num.length; i++) {
+//            System.out.println(num[i]);
+            answer += Integer.parseInt(num[i]);
         }
 
 
-        return -1;
+        return answer;
 
     }
 
