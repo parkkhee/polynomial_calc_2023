@@ -2,17 +2,33 @@ package com.ll;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class Calc {
 
     public static int run(String str) {
         int answer=0;
-        boolean includeMul = false;
-        if (str.contains("*")) {
-            includeMul = true;
+
+        str = black(str);
+
+        boolean needToMulti = str.contains(" * ");
+        boolean needToPlus = str.contains(" + ") || str.contains(" - ");
+
+        boolean needToCompound = needToMulti && needToPlus;
+
+        if ( needToCompound ) {
+            String[] bits = str.split(" \\+ ");
+
+            String newExp = Arrays.stream(bits)
+                    .mapToInt(Calc::run)
+                    .mapToObj(e -> e + "")
+                    .collect(Collectors.joining(" + "));
+
+            return run(newExp);
         }
 
-        if (includeMul) {
+
+        if (needToMulti) {
 
             String[] num = str.split(" \\* ");
             int answerM =1;
@@ -34,6 +50,16 @@ public class Calc {
 
 
         return answer;
+
+    }
+
+    public static String black(String str) {
+        while (str.charAt(0) == '(' && str.charAt(str.length() - 1) == ')') {
+
+            str = str.substring(1, str.length() - 1);
+
+        }
+        return str;
 
     }
 

@@ -104,4 +104,23 @@ class CalcTest {
     void t16() {
         assertThat(Calc.run("10 * 10 * 10")).isEqualTo(1000);
     }
+
+    @Test
+    @DisplayName("7 * 3 + 10 + 5 * 2 == 41")
+    void t17(){
+        assertThat(Calc.run("7 * 3 + 10 + 5 * 2")).isEqualTo(41);
+    }
+
+    @Test
+    @DisplayName("(10 + 20) == 30")
+    void t18() {
+        assertThat(Calc.run("(10 + 20)")).isEqualTo(30);
+    }
+
+
+    @Test
+    @DisplayName("(((70 + 20))) == 90")
+    void t19() {
+        assertThat(Calc.run("(((70 + 20)))")).isEqualTo(90);
+    }
 }
