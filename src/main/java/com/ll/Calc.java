@@ -7,9 +7,13 @@ import java.util.stream.Collectors;
 public class Calc {
 
     public static int run(String str) {
+        str = str.trim();
         int answer=0;
 
         str = black(str);
+
+        // 단일항이 입력되면 바로 리턴
+        if (!str.contains(" ")) return Integer.parseInt(str);
 
         boolean needToMulti = str.contains(" * ");
         boolean needToPlus = str.contains(" + ") || str.contains(" - ");
@@ -17,27 +21,13 @@ public class Calc {
 
         boolean needToCompound = needToMulti && needToPlus;
         if ( needToSplit ) {
-            int bracketsCount = 0;
-            int splitPointIndex = -1;
 
-            for ( int i = 0; i < str.length(); i++ ) {
-                if ( str.charAt(i) == '(' ) {
-                    bracketsCount++;
-                }
-                else if ( str.charAt(i) == ')' ) {
-                    bracketsCount--;
-                }
+            int splitPointIndex = findSplitPointIndex(str);
 
-                if ( bracketsCount == 0 ) {
-                    splitPointIndex = i;
-                    break;
-                }
-            }
+            String firstExp = str.substring(0, splitPointIndex);
+            String secondExp = str.substring(splitPointIndex + 1);
 
-            String firstExp = str.substring(0, splitPointIndex + 1);
-            String secondExp = str.substring(splitPointIndex + 4);
-
-            char operationCode = str.charAt(splitPointIndex + 2);
+            char operationCode = str.charAt(splitPointIndex);
 
             str = Calc.run(firstExp) + " " + operationCode + " " + Calc.run(secondExp);
 
@@ -55,7 +45,7 @@ public class Calc {
         }
 
 
-        if (needToMulti) {
+        else if (needToMulti) {
 
             String[] num = str.split(" \\* ");
             int answerM =1;
@@ -81,13 +71,46 @@ public class Calc {
     }
 
     public static String black(String str) {
-        while (str.charAt(0) == '(' && str.charAt(str.length() - 1) == ')') {
+        int outerBracketsCount = 0;
 
-            str = str.substring(1, str.length() - 1);
-
+        while (str.charAt(outerBracketsCount) == '(' && str.charAt(str.length() - 1 - outerBracketsCount) == ')') {
+            outerBracketsCount++;
         }
-        return str;
+
+        if (outerBracketsCount == 0) return str;
+
+        return str.substring(outerBracketsCount, str.length() - outerBracketsCount);
 
     }
+
+    //( 과 ) 의 사이
+    private static int findSplitPointIndexBy(String exp, char findChar) {
+        int bracketsCount = 0;
+
+        for (int i = 0; i < exp.length(); i++) {
+            char c = exp.charAt(i);
+
+            if ( c == '(' ) {
+                bracketsCount++;
+            }
+            else if ( c == ')' ) {
+                bracketsCount--;
+            }
+            else if ( c == findChar ) {
+                if ( bracketsCount == 0 ) return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private static int findSplitPointIndex(String exp) {
+        int index = findSplitPointIndexBy(exp, '+');
+
+        if ( index >= 0 ) return index;
+
+        return findSplitPointIndexBy(exp, '*');
+    }
+
 
 }
